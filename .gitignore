@@ -1,0 +1,17 @@
+# Ignore downloaded dataset folders
+/plantDoc-4/
+/plant-disease-detection-5/
+
+# Ignore your data script (if it's intermediate or local only)
+data.py
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore large log or cache files
+*.log
+*.cache
+__pycache__/
+
+runs/sota/yolov8n/predict
+runs/sota/yolov8n/val
