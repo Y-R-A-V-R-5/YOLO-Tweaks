@@ -94,12 +94,12 @@ These plots illustrate the classic trade-off space, showing how the models clust
 #### Performance (Accuracy)
 Larger area indicates higher overall detection performance. **YOLOv8** and the **v10v11** hybrid dominate the top quadrant.
 
-![Performance Radar Chart](comparision/performance.jpg)
+![Performance Radar Chart](comparision/performance.png)
 
 #### Efficiency (Compute & Latency)
 Lower values are better for efficiency. Note how the latency ($\text{Infer}(\text{ms})$) for the v10v11 hybrid drastically pulls its overall efficiency profile outwards, despite having the best parameters (Params(M)).
 
-![Efficiency Radar Chart](comparision/Efficiency.jpg)
+![Efficiency Radar Chart](comparision/Efficiency.png)
 
 ### Metric Correlation Heatmap
 The visual proof of the **efficiency paradox**: a strong negative correlation between Parameters and Inference Time.
