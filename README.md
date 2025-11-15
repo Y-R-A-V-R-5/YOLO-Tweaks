@@ -105,20 +105,20 @@ AgriPest/
 ```
 
 ---
+---
 
 ## 🧮 Model Complexity
 
-| Model      | Layers | Parameters | FLOPs |
+| Model | Layers | Parameters (M) | FLOPs (G) |
 | :--------- | -----: | ---------: | ----: |
-| YOLOv8     | 129    | 3.01 M     | 8.2 G |
-| YOLOv10    | 223    | 2.71 M     | 8.4 G |
-| YOLOv11    | 181    | 2.59 M     | 6.5 G |
-| **v8v10**  | 196    | 2.98 M     | 8.8 G |
-| **v10v11** | 168    | 2.06 M     | 6.6 G |
-| **v11v8**  | 153    | 2.52 M     | 6.2 G |
+| YOLOv8 | **129** | 3.01 | 8.2 |
+| YOLOv10 | 223 | 2.71 | 8.4 |
+| YOLOv11 | 181 | 2.59 | 6.5 |
+| **v8v10** | 196 | 2.98 | **8.8** |
+| **v10v11** | 168 | **2.06** | 6.6 |
+| **v11v8** | 153 | 2.52 | **6.2** |
 
-> Hybridization can reduce parameter count and FLOPs while maintaining comparable feature depth. Hybrids reduced compute while maintaining feature depth.
-
+> Hybridization can drastically reduce parameter count and FLOPs. **v10v11** achieved the lowest parameter count (2.06M) and **v11v8** the lowest FLOPs (6.2G).
 
 ---
 
@@ -128,159 +128,100 @@ AgriPest/
 
 | Model | Precision | Recall | mAP50 | mAP50-95 |
 |--------|----------:|---------:|---------:|------------:|
-| **YOLOv8** | 0.676 | 0.597 | **0.660** | **0.416** |
+| **YOLOv8** | **0.676** | 0.597 | **0.660** | **0.416** |
 | **YOLOv10** | 0.634 | 0.485 | 0.586 | 0.380 |
 | **YOLOv11** | 0.629 | 0.573 | 0.627 | 0.395 |
 | **v8v10** | 0.656 | 0.513 | 0.608 | 0.390 |
-| **v10v11** | 0.671 | 0.591 | **0.655** | **0.409** |
+| **v10v11** | 0.671 | **0.591** | **0.655** | 0.409 |
 | **v11v8** | 0.642 | 0.552 | 0.631 | 0.384 |
 
-### Interpretation  
-- **YOLOv8** remains the most accurate baseline on tiny insects.  
-- **v10v11** becomes the *top hybrid*, nearly matching YOLOv8 accuracy with lower compute.  
-- **v11v8** is balanced: strong recall + moderate FLOPs.  
-- **v8v10** improves recall vs v10 but stays mid-tier. 
+### Interpretation
+- **YOLOv8** remains the most accurate baseline on tiny insects.
+- **v10v11** becomes the ***top hybrid***, nearly matching YOLOv8 accuracy (mAP50: 0.655) with significantly lower compute (2.06M params).
+- **v11v8** is balanced: strong mAP50 and recall, with the lowest FLOPs (6.2G).
 
 ---
 
 ## ⏱️ Training & Inference Time
 
-|### **Baselines**
+### **Baselines**
 
-| Model | Training Time | Inference (ms/img) |
-|--------|----------------:|-----------------------:|
-| YOLOv8 |  531m 52.5s | 36.9 |
-| YOLOv10 | 699m 12.4s | 17.2 |
-| YOLOv11 | 564m 51.0s | **14.4** |
+| Model | Inference (ms/img) |
+|--------|-----------------------:|
+| YOLOv8 | 13.9 |
+| YOLOv10 | 17.3 |
+| YOLOv11 | **14.4** |
 
-### **Hybrids (from logs)**
+### **Hybrids**
 
-| Hybrid | Training Time | Inference (ms/img) |
-|--------|----------------:|-----------------------:|
-| v8v10 | 735m 45.5s | 14.7 |
-| v10v11 | 962m 50.5s | 27.9 |
-| v11v8 | 843m 42.0s | 23.2 |
+| Hybrid | Inference (ms/img) |
+|--------|-----------------------:|
+| v8v10 | 14.7 |
+| v10v11 | 27.9 |
+| v11v8 | 23.2 |
 
-> **YOLOv11 remains the fastest** due to lowest FLOPs;  
-> **v8v10** shows strong inference efficiency among hybrids.
----
-
-## 📊 Performance Comparison — Baselines vs Hybrids (AgriPest Validation)
-
-This section compares all six models using consistent, validation-set metrics:
-
-- Precision (P)  
-- Recall (R)  
-- mAP50  
-- mAP50-95  
-- Inference speed  
+> **YOLOv8** shows the fastest inference among all models (13.9 ms), contradicting its highest parameter/FLOP count. This highlights the crucial difference between theoretical FLOPs and actual **CPU-based latency**. **v10v11** has the lowest parameters but the highest inference time (27.9 ms).
 
 ---
 
-## 🟦 Baseline Models
+## 🧠 Summary of All Models
 
-### **YOLOv8 (Baseline)**
-- **P:** 0.676  
-- **R:** 0.597  
-- **mAP50:** 0.660  
-- **mAP50-95:** 0.416  
-- **Inference:** 13.9 ms  
-- Strongest baseline; robust for tiny-object detection.
-
----
-
-### **YOLOv11 (Baseline)**
-- **P:** 0.629  
-- **R:** 0.573  
-- **mAP50:** 0.627  
-- **mAP50-95:** 0.395  
-- **Inference:** 14.4 ms  
-- Most efficient baseline (lowest FLOPs, fastest inference).
+| Model | Type | P | R | mAP50 | mAP50-95 | Params (M) | FLOPs (G) | Infer (ms) |
+|-------|------|------:|------:|--------:|------------:|-----------:|----------:|-----------:|
+| **YOLOv8** | Baseline | **0.676** | 0.597 | **0.660** | **0.416** | 3.01 | 8.2 | **13.9** |
+| **YOLOv11** | Baseline | 0.629 | 0.573 | 0.627 | 0.395 | 2.59 | **6.5** | 14.4 |
+| **YOLOv10** | Baseline | 0.634 | 0.485 | 0.586 | 0.380 | 2.71 | 8.4 | 17.3 |
+| **v8v10** | Hybrid | 0.656 | 0.513 | 0.608 | 0.390 | 2.98 | **8.8** | 14.7 |
+| **v10v11** | Hybrid | 0.671 | **0.591** | **0.655** | 0.409 | **2.06** | 6.6 | 27.9 |
+| **v11v8** | Hybrid | 0.642 | 0.552 | 0.631 | 0.384 | 2.52 | **6.2** | 23.2 |
 
 ---
 
-### **YOLOv10 (Baseline)**
-- **P:** 0.634  
-- **R:** 0.485  
-- **mAP50:** 0.586  
-- **mAP50-95:** 0.380  
-- **Inference:** 17.3 ms  
-- Weakest of the three baselines but still efficient.
+## 📈 Visualizations (Results)
 
----
+### 1. Accuracy vs. Efficiency Trade-offs (Pairwise Metrics)
+These plots show how performance metrics (X-axis) are affected by complexity metrics (Y-axis), revealing no simple linear relationship on the AgriPest dataset.
 
-## 🟩 Hybrid Architectures (Backbone × Head)
+![Pairwise Performance vs Complexity Scatter Plots](comparision/metrics.png)
 
-## **v8v10 — YOLOv8 Backbone + YOLOv10 Head**
-- **P:** 0.656  
-- **R:** 0.513  
-- **mAP50:** 0.608  
-- **mAP50-95:** 0.390  
-- **Inference:** 14.7 ms  
-- Outperforms YOLOv10; sits between v11 and v8 in accuracy.
+### 2. Performance Line Plot
+The performance metrics across models, highlighting **YOLOv8** and the **v10v11** hybrid as accuracy leaders.
 
----
+![Model Performance Line Plot](comparision/model_performance.png)
 
-### **v10v11 — YOLOv10 Backbone + YOLOv11 Head**
-- **P:** 0.671  
-- **R:** 0.591  
-- **mAP50:** 0.655  
-- **mAP50-95:** 0.409  
-- **Inference:** 27.9 ms  
-- ⭐ **Top hybrid model**  
-- Nearly matches YOLOv8 accuracy with fewer parameters.
+### 3. Efficiency Line Plot
+This chart tracks Layers, FLOPs, Parameters, and Inference Time across the six models. Note the high layer count for YOLOv10 and the counter-intuitive speed of YOLOv8.
 
----
+![Model Efficiency Line Plot](comparision/model_efficiency.png)
 
-### **v11v8 — YOLOv11 Backbone + YOLOv8 Head**
-- **P:** 0.642  
-- **R:** 0.552  
-- **mAP50:** 0.631  
-- **mAP50-95:** 0.384  
-- **Inference:** 23.2 ms  
-- High recall and solid accuracy; heavier head increases inference time.
+### 4. Normalized Performance-Efficiency (Parallel Coordinates)
+This plot normalizes all metrics (1.0 = best, 0.0 = worst) to visualize the overall profile of each model.
 
----
+![Performance and Efficiency Parallel Coordinates](comparision/PE.png)
 
-## 🧠 Summary
+### 5. Multi-Metric Radar Plots
 
-| Model | Type | P | R | mAP50 | mAP50-95 | Inference |
-|-------|------|------:|------:|--------:|------------:|------------:|
-| **YOLOv8** | Baseline | **0.676** | 0.597 | **0.660** | **0.416** | 13.9 ms |
-| **YOLOv11** | Baseline | 0.629 | 0.573 | 0.627 | 0.395 | **14.4 ms** |
-| **YOLOv10** | Baseline | 0.634 | 0.485 | 0.586 | 0.380 | 17.3 ms |
-| **v8v10** | Hybrid | 0.656 | 0.513 | 0.608 | 0.390 | 14.7 ms |
-| **v10v11** | Hybrid | 0.671 | 0.591 | **0.655** | 0.409 | 27.9 ms |
-| **v11v8** | Hybrid | 0.642 | 0.552 | 0.631 | 0.384 | 23.2 ms |
+#### Performance Comparison (Accuracy)
+Higher area indicates better overall detection quality. **YOLOv8** and **v10v11** show the largest performance footprint.
 
----
+![Performance Radar Chart](comparision/performance.png)
 
-## 🔍 Interpretation
-- **YOLOv8 remains the accuracy leader**, setting the baseline.  
-- **v10v11 is the strongest hybrid**, approaching YOLOv8 mAP while using fewer FLOPs.  
-- **v11 base is the most efficient baseline**, offering fastest inference.  
-- **v8v10 is an efficient mid-performance hybrid**, outperforming v10.  
-- **v11v8 blends strong recall with slightly higher compute.**
+#### Efficiency Comparison (Compute/Latency)
+Lower area indicates better efficiency (lower FLOPs, Params, and Inference time). **YOLOv11** is the most efficient by FLOPs/Params, while **YOLOv8** is fastest by latency.
 
----
+![Efficiency Radar Chart](comparision/Efficiency.png)
 
-## 🧠 Observations
+### 6. Metric Correlation Analysis
 
-YOLOv8 → best accuracy on tiny targets (rich C2f blocks)  
-YOLOv11 → best efficiency, leanest compute  
-YOLOv10 → balance of both, but underperforms on small pests  
-**Hybrid v11v8 (expected):** lightweight backbone + denser head = potential sweet spot
+This heatmap shows the Pearson correlation coefficient between all performance and efficiency metrics.
 
----
+![Correlation Heatmap](comparision/correlation.png)
 
-## 📈 Visualizations (to be included)
+**Key Correlation Insights from Heatmap:**
 
-- Layer count vs FLOPs  
-- mAP vs GFLOPs  
-- Precision-Recall curves  
-- Inference speed comparison  
-
-*(Plots auto-generated from `results.csv` and `train.log` once all variants complete training.)*
+* **Accuracy Metrics** are highly positively correlated ($\ge 0.71$).
+* **Latency vs. Compute:** Inference time is **highly negatively correlated** with both FLOPs and Parameters ($-0.60$ and $-0.89$, respectively). This is a critical finding, indicating that the theoretical complexity (FLOPs/Params) is **decoupled** from actual CPU-based inference latency. Faster models in this test had higher parameter counts.
+* **mAP vs. Efficiency:** Accuracy metrics (mAP50-95) show very low correlation with FLOPs ($-0.04$) and Params ($-0.07$), suggesting that complexity **does not guarantee** better performance on this tiny-object dataset.
 
 ---
 
@@ -288,42 +229,41 @@ YOLOv10 → balance of both, but underperforms on small pests
 
 ### What this experiment reveals:
 
-- **Dense-feature heads (v8)** improve small-object detection even when paired with newer backbones.  
-- **Efficient heads (v10/v11)** significantly lower compute but require strong low-level features.  
-- **Backbone–head compatibility matters**: mismatches lower mAP even when compute is reduced.  
-- **Hybrid v10v11** achieves the best balance → low compute + high accuracy.
+* **Hybrid Success:** The **v10v11** hybrid (YOLOv10 Backbone + YOLOv11 Head) is the top performer, achieving near-YOLOv8 accuracy (mAP50: **0.655** vs. **0.660**) with significantly lower parameters (**2.06M** vs. **3.01M**). This confirms that modern, efficient head designs can be effectively paired with an older, feature-rich backbone to create an optimized architecture.
+* **Efficiency vs. Latency Decoupling:** The experiment strongly suggests that **GFLOPs and Parameter count are poor proxies for real-world CPU inference latency** on this specific hardware. The high negative correlation between Parameters and Inference Time ($\approx -0.89$) is a major observation, implying that architectural factors (e.g., memory access, highly optimized kernels) are dominating the overhead, not just the raw FLOPs.
+* **Head Design Matters for Tiny Objects:** Models using the dense, simple **YOLOv8 Head** (YOLOv8, v11v8) generally achieved higher $\text{mAP50-95}$, suggesting the v8 head is more effective at resolving the fine-grained, tiny features characteristic of the AgriPest dataset compared to the decoupled/efficient heads of v10 and v11.
+
 ---
 
 ## 🔮 Future Work
 
-1. Complete training for hybrid (v8v10, v10v11, v11v8) models.  
-2. Plot architecture-efficiency curves (mAP vs FLOPs vs params).  
-3. Evaluate hybrid stability on more datasets (COCO-subset / BCCD).  
-4. Compare against lightweight architectures (YOLO-Nano, RT-DETR).  
-5. Export hybrids to ONNX / TorchScript for speed benchmarking.
+1.  **Investigate the $\text{Params}-\text{Inference}$ Discrepancy:** Perform detailed profiling (e.g., PyTorch profiler) to pinpoint the architectural or operational causes of the highly negative correlation between parameter count and CPU inference time.
+2.  Plot architecture-efficiency curves ($\text{mAP}$ vs. $\text{FLOPs}$ vs. $\text{Params}$) to better visualize the Pareto frontier.
+3.  Evaluate hybrid stability on more datasets (COCO-subset / BCCD).
+4.  Export hybrids to ONNX / TorchScript for speed benchmarking.
 
 ---
 
 ## 📚 Key Takeaways
 
-- **Architectural literacy** → understanding YOLO internals beyond API usage.  
-- **Feature-head synergy** → small changes in module hierarchy heavily affect detection consistency.  
-- **Efficiency-accuracy trade-off** → lower GFLOPs ≠ lower mAP when structural alignment is preserved.
+* **Architectural Literacy** $\rightarrow$ Understanding YOLO internals beyond API usage.
+* **Feature-Head Synergy** $\rightarrow$ The **v10v11** hybrid proves that mixing generations can preserve high accuracy with reduced theoretical compute.
+* **Efficiency-Accuracy Trade-off** $\rightarrow$ Lower GFLOPs/Params **do not necessarily** equate to lower $\text{mAP}$ or faster real-world inference; architectural and memory-access optimizations are paramount for latency.
 
 ---
 
 ## 🧾 Author
 
-**Y. R. A. V. R** — Hyderabad, India  
-🔗 [LinkedIn](https://www.linkedin.com/in/yravr/)  |  [GitHub](https://github.com/Y-R-A-V-R-5/YOLO-TWEAKS)
+**Y. R. A. V. R** — Hyderabad, India
+🔗 [LinkedIn](https://www.linkedin.com/in/yravr/) | [GitHub](https://github.com/Y-R-A-V-R-5/YOLO-TWEAKS)
 
 ---
 
 ## 📎 References
 
-- [Ultralytics YOLOv8 → v11 Releases](https://github.com/ultralytics/ultralytics)  
-- [SCDown and C3k2 modules (YOLOv10 paper)](https://arxiv.org/abs/2405.14458)  
-- [CIB Blocks and Hybrid Heads (YOLOv11)](https://github.com/ultralytics/ultralytics/releases)  
+- [Ultralytics YOLOv8 → v11 Releases](https://github.com/ultralytics/ultralytics)
+- [SCDown and C3k2 modules (YOLOv10 paper)](https://arxiv.org/abs/2405.14458)
+- [CIB Blocks and Hybrid Heads (YOLOv11)](https://github.com/ultralytics/ultralytics/releases)
 - [AgriPest Dataset](https://www.kaggle.com/datasets/xiaoyuan-chen/agri-pest-dataset)
 
 ---
@@ -332,3 +272,4 @@ YOLOv10 → balance of both, but underperforms on small pests
 
 > *“YOLO-Tweaks” demonstrates how a hands-on learner can dissect and recombine architectures across model generations — moving from training usage to genuine architectural experimentation.*
 > > *This repository demonstrates architectural literacy, experimental thinking, and hands-on model engineering — transitioning from model usage to genuine structural exploration.*
+
