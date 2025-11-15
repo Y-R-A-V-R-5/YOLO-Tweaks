@@ -1,11 +1,21 @@
-# 🧠 YOLO-Tweaks: Backbone–Head Compatibility Experiments Across YOLOv8 / YOLOv10 / YOLOv11  
+# 🧠 YOLO-Tweaks: Backbone–Head Hybrid Compatibility Experiments Across YOLOv8 / YOLOv10 / YOLOv11  
 🚀 **Personal Research Project (Independent Study)**  
 📍 *Exploring structural compatibility, scaling behavior, and performance trade-offs across YOLO architectures.*
 
 ---
 
 ## 🎯 Objective
-This project investigates how **interchanging YOLO backbones and heads** affects detection performance, computational cost, and architectural stability.
+This project explores how different combinations of backbones and detection heads affect performance on a fine-grained, tiny-object dataset (AgriPest).
+
+Three standard YOLO models are used as baselines, and three custom hybrid architectures are created by mixing/ swapping backbone–head pairs.
+
+The goal is to understand:
+
+    How compute (params, FLOPs),
+    Feature extraction quality, and
+    Multi-scale detection head design
+
+together influence precision, recall, and mAP.
 
 > Rather than treating YOLO architectures as immutable, this experiment approaches them **as modular systems** — where *backbone–neck–head components* can be recombined to discover hybrid efficiency.
 
@@ -179,4 +189,5 @@ YOLOv10 → balance of both, but underperforms on small pests
 ---
 
 ### ⚡ README Snapshot Summary
+
 > *“YOLO-Tweaks” demonstrates how a hands-on learner can dissect and recombine architectures across model generations — moving from training usage to genuine architectural experimentation.*
