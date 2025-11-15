@@ -87,24 +87,24 @@ Models leveraging the robust, dense-feature **YOLOv8 Head** (YOLOv8, v11v8) cons
 ### Performance vs. Efficiency Trade-offs
 These plots illustrate the classic trade-off space, showing how the models cluster. The ideal model would sit in the top-right (high accuracy) and bottom-left (low compute/latency) quadrants.
 
-![Pairwise Performance vs Complexity Scatter Plots](comparision\PE.png)
+![Pairwise Performance vs Complexity Scatter Plots](comparision/PE.png)
 
 ### Multi-Metric Comparison (Radar Plots)
 
 #### Performance (Accuracy)
 Larger area indicates higher overall detection performance. **YOLOv8** and the **v10v11** hybrid dominate the top quadrant.
 
-![Performance Radar Chart](comparision\performance.jpg)
+![Performance Radar Chart](comparision/performance.jpg)
 
 #### Efficiency (Compute & Latency)
 Lower values are better for efficiency. Note how the latency ($\text{Infer}(\text{ms})$) for the v10v11 hybrid drastically pulls its overall efficiency profile outwards, despite having the best parameters (Params(M)).
 
-![Efficiency Radar Chart](comparision\Efficiency.jpg)
+![Efficiency Radar Chart](comparision/Efficiency.jpg)
 
 ### Metric Correlation Heatmap
 The visual proof of the **efficiency paradox**: a strong negative correlation between Parameters and Inference Time.
 
-![Correlation Heatmap](camparision\correlation.png)
+![Correlation Heatmap](comparision/correlation.png)
 
 ---
 
