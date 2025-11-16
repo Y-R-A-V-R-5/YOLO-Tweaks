@@ -264,7 +264,7 @@ This heatmap shows the Pearson correlation coefficient between all performance a
 - [Ultralytics YOLOv8 → v11 Releases](https://github.com/ultralytics/ultralytics)
 - [SCDown and C3k2 modules (YOLOv10 paper)](https://arxiv.org/abs/2405.14458)
 - [CIB Blocks and Hybrid Heads (YOLOv11)](https://github.com/ultralytics/ultralytics/releases)
-- [AgriPest Dataset](https://www.kaggle.com/datasets/xiaoyuan-chen/agri-pest-dataset)
+- [AgriPest Dataset](https://www.kaggle.com/datasets/rupankarmajumdar/crop-pests-dataset)
 
 ---
 
@@ -272,4 +272,5 @@ This heatmap shows the Pearson correlation coefficient between all performance a
 
 > *“YOLO-Tweaks” demonstrates how a hands-on learner can dissect and recombine architectures across model generations — moving from training usage to genuine architectural experimentation.*
 > > *This repository demonstrates architectural literacy, experimental thinking, and hands-on model engineering — transitioning from model usage to genuine structural exploration.*
+
 
